@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Shop</title>
+    <style >
+        h1{
+            background-color: rgb(21, 163, 229);
+            text-align: center;
+           border: 5px solid black;
+           border-radius: 50px;
+           height: 80px;
+           padding-top: 30px;
+           width: 60%;
+           position: relative;
+           left: 250px;
+        }
+        .p1{
+            text-decoration: double;
+           
+            font-size: 40px;
+            
+        }
+        input{
+            position: relative;
+            left: 100px;
+            width: 30%;
+            height: 40px;
+            border: solid black;
+          
+        }
+        label{
+            color: brown;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 30px;
+         
+            
+        }
+        .i1{
+          position: relative;
+            
+        }
+        .i2{
+          position: relative;
+          left: 32px;
+            
+        }
+        .i3{
+          position: relative;
+          left: 113px;
+            
+        }
+        .i4{
+          position: relative;
+          left: 66px;
+            
+        }
+        button{
+            border: solid black;
+    border-radius: 40px;
+    height: 42px;
+    width: 11%;
+    position: relative;
+    left: 332px;
+    /* padding-top: 10px; */
+    margin-top: 12px;
+    background-color: red;
+    margin: 5px;
+        }
+        h2{
+            font-size: medium;
+            font-weight: bold;
+    font-style: oblique;
+    font-size: 50px;
+        }
+        body{
+            background-color: plum
+        }
+    </style>
+</head>
+<body>
+    <form id="user">
+        <p class="text-decoration-underline fw-light fst-italic">Copyright &copy; Preeti Kurmi</p>
+    <h1>Candy_Shop
+       
+    </h1>
+    <p class="p1"><strong>You can put varitites of choclate</strong> </p>
+    <label for="">Candy Name:</label>
+    <input  class="i1" type="text" name="" id="cname">
+    <br><br>
+    <label for="">Candy Description:</label>
+    <input class="i2"type="text" name="" id="cdes">
+    <br><br>
+    <label for="">Candy Price:</label>
+    <input  class="i3" name="" id="cprice">
+    <br><br>
+    
+
+
+    <label for="">Candy Quantity:</label>
+    <input type="number" name="" id="cquantity" class="i4">
+    <br><br>
+    <button>Add items</button></form>
+    <div class="divdata">
+        <h2>Display Available Choclate</h2>
+    </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
+<script>
+    function fetchDataAndDisplay() {
+            axios.get("https://crudcrud.com/api/d48d995b00374447a499852f3110897c/restapi")
+            .then((response) => {
+                displayData(response.data); // Call the displayData function with the response data
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }
+
+        // Function to display data in div elements
+        function displayData(data) {
+            const chocolateListDiv = document.getElementById("divdata");
+
+            // Clear existing content
+            chocolateListDiv.innerHTML = '';
+
+            // Loop through the data and create div elements for each chocolate
+            data.forEach((chocolate) => {
+                const div = document.createElement('div');
+                div.className = 'chocolate-item'; // Add a class for styling
+                div.innerHTML = `
+                    <p>Candy Name: ${chocolate.candyName}</p>
+                    <p>Candy Description: ${chocolate.candyDescription}</p>
+                    <p>Candy Price: ${chocolate.candyPrice}</p>
+                    <p>Candy Quantity: ${chocolate.candyQuantity}</p>
+                `;
+                chocolateListDiv.appendChild(div);
+            });
+        }
+
+        // Call the fetchDataAndDisplay function when the page loads
+        window.addEventListener("DOMContentLoaded", fetchDataAndDisplay);
+        var cname = document.getElementById("cname");
+            var cdes = document.getElementById("cdes");
+            var cprice = document.getElementById("cprice");
+            var cquantity = document.getElementById("cquantity");
+           let div= document.createElement('div');
+    document.getElementById('user').addEventListener('submit',display);
+        //event.preventDefault();
+        function display(event){
+            var candyName = document.getElementById("cname").value;
+            var candyDescription = document.getElementById("cdes").value;
+            var candyPrice = document.getElementById("cprice").value;
+            var candyQuantity = document.getElementById("cquantity").value;
+            event.preventDefault();
+            const c={
+                candyName,candyDescription,candyPrice,candyQuantity
+            };
+            axios.post("https://crudcrud.com/api/d48d995b00374447a499852f3110897c/restapi",c)
+            .then((response)=>{
+                console.log(response.data);
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+            
+            
+           div.innerHTML=`<p> Candy Name:${candyName}</p>
+           <p> Candy Description:${candyDescription}</p>
+           <p> Candy Price:${candyPrice}</p>
+           <p> Candy Quantity:${candyQuantity}</p>
+           `;
+           
+document.querySelector(".divdata").appendChild(div);}
+
+      let btn1=document.createElement('button');
+      btn1.textContent="Buy1";
+      document.querySelector(".divdata").appendChild(btn1);
+      let btn2=document.createElement('button');
+      btn2.textContent="Buy2";
+      document.querySelector(".divdata").appendChild(btn2);
+      let btn3=document.createElement('button');
+      btn3.textContent="Buy3";
+      document.querySelector(".divdata").appendChild(btn3);
+      btn1.addEventListener('click',()=>{
+        var cqv=cquantity.value;
+        console.log(cqv);
+        if( cqv>0){
+           cqv=cqv-1;
+           cquantity.value=cqv;
+           display(event);
+        }
+        else if(cqv==0){
+            alert("Candy is not availabe")
+        }
+        
+      })
+      btn2.addEventListener('click',()=>{
+        var cqv=cquantity.value;
+        console.log(cqv);
+        if( cqv>0){
+           cqv=cqv-2;
+           cquantity.value=cqv;
+           display(event);
+        }
+        else if(cqv<=0){
+            alert("Candy is not availabe")
+        }
+        
+      })
+      btn3.addEventListener('click',()=>{
+        var cqv=cquantity.value;
+        console.log(cqv);
+        if( cqv>0){
+           cqv=cqv-3;
+           cquantity.value=cqv;
+           display(event);
+        }
+        else if(cqv<=0){
+            alert("Candy is not availabe")
+        }
+        
+      })
+
+
+
+     
+
+
+
+
+   
+
+</script>
+</body>
+</html>
